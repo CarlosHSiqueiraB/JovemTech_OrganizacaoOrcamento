@@ -1,4 +1,13 @@
 ﻿Public Class Form1
+
+    Private clientes As New List(Of Cliente)
+
+    Private servicos As New List(Of Servico)
+
+    Private orcamentos As New List(Of Orcamento)
+
+    Private proximoPedido As Integer = 1
+
     Private Sub NomeLabel(sender As Object, e As EventArgs) Handles Label1.Click
 
     End Sub
@@ -9,31 +18,39 @@
 
     Private Sub BotaoCadastrarPessoa(sender As Object, e As EventArgs) Handles Button1.Click
 
-        If TextBox1.Text.Trim() = "" Then
+        Dim cliente As New Cliente
+
+        If String.IsNullOrWhiteSpace(TextBox1.Text) Then
             MessageBox.Show("Informe o nome.")
             Exit Sub
         End If
 
-        If TextBox2.Text.Trim() = "" Then
+        If TextBox1.Text.Trim.Length < 3 Then
+            MessageBox.Show("Nome deve possuir ao menos 3 caracteres.")
+            Exit Sub
+        End If
+
+        If String.IsNullOrWhiteSpace(TextBox2.Text) Then
             MessageBox.Show("Informe o contato.")
             Exit Sub
         End If
 
         If Not IsNumeric(TextBox2.Text) Then
-            MessageBox.Show("O contato deve conter apenas números.")
+            MessageBox.Show("Contato deve conter apenas números.")
             Exit Sub
         End If
 
-        Dim cadastro As String
+        cliente.Nome = TextBox1.Text.Trim()
+        cliente.Contato = TextBox2.Text.Trim()
 
-        cadastro = TextBox1.Text & " - " & TextBox2.Text
+        clientes.Add(cliente)
 
-        Lista_Cadastro.Items.Add(cadastro)
-        ComboBox2.Items.Add(cadastro)
+        Lista_Cadastro.Items.Add(cliente)
+
+        ComboBox2.Items.Add(cliente)
 
         TextBox1.Clear()
         TextBox2.Clear()
-
 
     End Sub
 
@@ -73,29 +90,31 @@
 
     Private Sub BotaoCadastraService(sender As Object, e As EventArgs) Handles Button2.Click
 
-        If TextBox4.Text.Trim() = "" Then
-            MessageBox.Show("Informe o nome do serviço.")
-            Exit Sub
-        End If
+        Dim servico As New Servico
 
         Dim preco As Decimal
 
         If Not Decimal.TryParse(TextBox3.Text, preco) Then
+
             MessageBox.Show("Preço inválido.")
             Exit Sub
+
         End If
 
         If preco <= 0 Then
-            MessageBox.Show("O preço deve ser maior que zero.")
+
+            MessageBox.Show("Preço deve ser maior que zero.")
             Exit Sub
+
         End If
+        servico.Nome = TextBox4.Text.Trim()
+        servico.Preco = preco
 
-        Dim cadastroService As String
+        servicos.Add(servico)
 
-        cadastroService = TextBox4.Text & " - R$: " & TextBox3.Text
+        Lista_Serviço.Items.Add(servico)
 
-        Lista_Serviço.Items.Add(cadastroService)
-        ComboBox1.Items.Add(cadastroService)
+        ComboBox1.Items.Add(servico)
 
         TextBox3.Clear()
         TextBox4.Clear()
@@ -128,39 +147,155 @@
 
     Private Sub BotaoAprovar(sender As Object, e As EventArgs) Handles Button3.Click
 
+        If ListaPendência.SelectedItem Is Nothing Then
+
+            MessageBox.Show("Selecione um orçamento.")
+            Exit Sub
+
+        End If
+
+        Dim orcamento As Orcamento
+
+        orcamento = CType(ListaPendência.SelectedItem, Orcamento)
+
+        orcamento.Status = "Aprovado"
+
+        orcamento.NumeroPedido = proximoPedido
+
+        proximoPedido += 1
+
+        HistoricosAprovados.Items.Add(orcamento)
+
+        ListaPendência.Items.Remove(orcamento)
+
     End Sub
 
     Private Sub BotaoAdicionarPendente(sender As Object, e As EventArgs) Handles Button5.Click
 
         If ComboBox2.SelectedItem Is Nothing Then
+
             MessageBox.Show("Selecione um cliente.")
             Exit Sub
+
         End If
 
         If ComboBox1.SelectedItem Is Nothing Then
+
             MessageBox.Show("Selecione um serviço.")
             Exit Sub
+
         End If
 
-        If TextBox7.Text = "" Then
-            MessageBox.Show("Informe a quantidade.")
+        Dim quantidade As Integer
+
+        If Not Integer.TryParse(TextBox7.Text, quantidade) Then
+
+            MessageBox.Show("Quantidade inválida.")
             Exit Sub
+
         End If
 
-        Dim pendencia As String
+        If quantidade <= 0 Then
 
-        pendencia = "Cliente: " & ComboBox2.SelectedItem.ToString() &
-                " | Serviço: " & ComboBox1.SelectedItem.ToString() &
-                " | Quantidade: " & TextBox7.Text
+            MessageBox.Show("Quantidade deve ser maior que zero.")
+            Exit Sub
 
-        ListaPendência.Items.Add(pendencia)
+        End If
+
+        Dim item As New ItemOrcamento
+
+        item.Servico = CType(ComboBox1.SelectedItem, Servico)
+        item.Quantidade = quantidade
+
+        Dim orcamento As New Orcamento
+
+        orcamento.Cliente = CType(ComboBox2.SelectedItem, Cliente)
+        orcamento.Item = item
+
+        orcamentos.Add(orcamento)
+
+        ListaPendência.Items.Add(orcamento)
 
         TextBox7.Clear()
 
 
     End Sub
 
+    Private Sub ListaPendência_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListaPendência.SelectedIndexChanged
+
+        If ListaPendência.SelectedItem Is Nothing Then Exit Sub
+
+        Dim orcamento As Orcamento
+
+        orcamento = CType(ListaPendência.SelectedItem, Orcamento)
+
+        MessageBox.Show(
+        "Cliente: " & orcamento.Cliente.Nome & vbCrLf &
+        "Contato: " & orcamento.Cliente.Contato & vbCrLf &
+        "Serviço: " & orcamento.Item.Servico.Nome & vbCrLf &
+        "Preço Unitário: R$ " & orcamento.Item.Servico.Preco.ToString("N2") & vbCrLf &
+        "Quantidade: " & orcamento.Item.Quantidade & vbCrLf &
+        "Total: R$ " & orcamento.ValorTotal.ToString("N2") & vbCrLf &
+        "Status: " & orcamento.Status
+    )
+
+    End Sub
+
+    Private Sub HistoricosAprovados_SelectedIndexChanged(sender As Object, e As EventArgs) Handles HistoricosAprovados.SelectedIndexChanged
+
+        If HistoricosAprovados.SelectedItem Is Nothing Then Exit Sub
+
+        Dim orcamento As Orcamento
+
+        orcamento = CType(HistoricosAprovados.SelectedItem, Orcamento)
+
+        MessageBox.Show(
+        "Pedido #" & orcamento.NumeroPedido & vbCrLf &
+        "Cliente: " & orcamento.Cliente.Nome & vbCrLf &
+        "Valor Total: R$ " & orcamento.ValorTotal.ToString("N2")
+    )
+
+    End Sub
+
+    Private Sub HistoricoRecusados_SelectedIndexChanged(sender As Object, e As EventArgs) Handles HistoricoRecusados.SelectedIndexChanged
+
+        If HistoricoRecusados.SelectedItem Is Nothing Then Exit Sub
+
+        Dim orcamento As Orcamento
+
+        orcamento = CType(HistoricoRecusados.SelectedItem, Orcamento)
+
+        MessageBox.Show(
+        "Cliente: " & orcamento.Cliente.Nome & vbCrLf &
+        "Motivo: " & orcamento.MotivoRejeicao
+    )
+
+    End Sub
+
     Private Sub BotaoRecusar(sender As Object, e As EventArgs) Handles Button4.Click
+
+        If ListaPendência.SelectedItem Is Nothing Then
+
+            MessageBox.Show("Selecione um orçamento.")
+            Exit Sub
+
+        End If
+
+        Dim motivo As String
+
+        motivo = InputBox("Informe o motivo da rejeição")
+
+        Dim orcamento As Orcamento
+
+        orcamento = CType(ListaPendência.SelectedItem, Orcamento)
+
+        orcamento.Status = "Rejeitado"
+
+        orcamento.MotivoRejeicao = motivo
+
+        HistoricoRecusados.Items.Add(orcamento)
+
+        ListaPendência.Items.Remove(orcamento)
 
     End Sub
 
