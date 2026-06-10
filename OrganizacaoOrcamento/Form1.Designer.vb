@@ -34,6 +34,15 @@ Partial Class Form1
         Label3 = New Label()
         Label4 = New Label()
         TextBox4 = New TextBox()
+        TextBox7 = New TextBox()
+        ListaPendência = New ListBox()
+        Button3 = New Button()
+        Button4 = New Button()
+        Button5 = New Button()
+        HistoricosAprovados = New ListBox()
+        HistoricoRecusados = New ListBox()
+        ComboBox1 = New ComboBox()
+        ComboBox2 = New ComboBox()
         SuspendLayout()
         ' 
         ' TextBox1
@@ -134,11 +143,94 @@ Partial Class Form1
         TextBox4.Size = New Size(125, 27)
         TextBox4.TabIndex = 6
         ' 
+        ' TextBox7
+        ' 
+        TextBox7.Location = New Point(523, 136)
+        TextBox7.Name = "TextBox7"
+        TextBox7.Size = New Size(226, 27)
+        TextBox7.TabIndex = 12
+        ' 
+        ' ListaPendência
+        ' 
+        ListaPendência.FormattingEnabled = True
+        ListaPendência.Location = New Point(523, 248)
+        ListaPendência.Name = "ListaPendência"
+        ListaPendência.Size = New Size(226, 224)
+        ListaPendência.TabIndex = 15
+        ' 
+        ' Button3
+        ' 
+        Button3.Location = New Point(523, 498)
+        Button3.Name = "Button3"
+        Button3.Size = New Size(94, 29)
+        Button3.TabIndex = 16
+        Button3.Text = "Aprovar"
+        Button3.UseVisualStyleBackColor = True
+        ' 
+        ' Button4
+        ' 
+        Button4.Location = New Point(655, 498)
+        Button4.Name = "Button4"
+        Button4.Size = New Size(94, 29)
+        Button4.TabIndex = 17
+        Button4.Text = "Recusar"
+        Button4.UseVisualStyleBackColor = True
+        ' 
+        ' Button5
+        ' 
+        Button5.Location = New Point(548, 194)
+        Button5.Name = "Button5"
+        Button5.Size = New Size(169, 29)
+        Button5.TabIndex = 18
+        Button5.Text = "Adicionar Pendência"
+        Button5.UseVisualStyleBackColor = True
+        ' 
+        ' HistoricosAprovados
+        ' 
+        HistoricosAprovados.FormattingEnabled = True
+        HistoricosAprovados.Location = New Point(882, 70)
+        HistoricosAprovados.Name = "HistoricosAprovados"
+        HistoricosAprovados.Size = New Size(226, 224)
+        HistoricosAprovados.TabIndex = 19
+        ' 
+        ' HistoricoRecusados
+        ' 
+        HistoricoRecusados.FormattingEnabled = True
+        HistoricoRecusados.Location = New Point(1193, 70)
+        HistoricoRecusados.Name = "HistoricoRecusados"
+        HistoricoRecusados.Size = New Size(226, 224)
+        HistoricoRecusados.TabIndex = 20
+        ' 
+        ' ComboBox1
+        ' 
+        ComboBox1.FormattingEnabled = True
+        ComboBox1.Location = New Point(523, 102)
+        ComboBox1.Name = "ComboBox1"
+        ComboBox1.Size = New Size(226, 28)
+        ComboBox1.TabIndex = 21
+        ' 
+        ' ComboBox2
+        ' 
+        ComboBox2.FormattingEnabled = True
+        ComboBox2.Location = New Point(523, 68)
+        ComboBox2.Name = "ComboBox2"
+        ComboBox2.Size = New Size(226, 28)
+        ComboBox2.TabIndex = 22
+        ' 
         ' Form1
         ' 
         AutoScaleDimensions = New SizeF(8.0F, 20.0F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(1385, 610)
+        ClientSize = New Size(1486, 610)
+        Controls.Add(ComboBox2)
+        Controls.Add(ComboBox1)
+        Controls.Add(HistoricoRecusados)
+        Controls.Add(HistoricosAprovados)
+        Controls.Add(Button5)
+        Controls.Add(Button4)
+        Controls.Add(Button3)
+        Controls.Add(ListaPendência)
+        Controls.Add(TextBox7)
         Controls.Add(Lista_Serviço)
         Controls.Add(Button2)
         Controls.Add(TextBox3)
@@ -169,5 +261,14 @@ Partial Class Form1
     Friend WithEvents Label3 As Label
     Friend WithEvents Label4 As Label
     Friend WithEvents TextBox4 As TextBox
+    Friend WithEvents TextBox7 As TextBox
+    Friend WithEvents ListaPendência As ListBox
+    Friend WithEvents Button3 As Button
+    Friend WithEvents Button4 As Button
+    Friend WithEvents Button5 As Button
+    Friend WithEvents HistoricosAprovados As ListBox
+    Friend WithEvents HistoricoRecusados As ListBox
+    Friend WithEvents ComboBox1 As ComboBox
+    Friend WithEvents ComboBox2 As ComboBox
 
 End Class
