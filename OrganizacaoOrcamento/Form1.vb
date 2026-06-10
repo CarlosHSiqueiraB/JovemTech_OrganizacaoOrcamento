@@ -86,6 +86,18 @@
 
     Private Sub ListBoxServices(sender As Object, e As EventArgs) Handles Lista_Serviço.SelectedIndexChanged
 
+        If Lista_Serviço.SelectedItem Is Nothing Then Exit Sub
+
+        Dim servico As Servico
+
+        servico = CType(Lista_Serviço.SelectedItem, Servico)
+
+        MessageBox.Show(
+        "=== SERVIÇO CADASTRADO ===" & vbCrLf & vbCrLf &
+        "Nome: " & servico.Nome & vbCrLf &
+        "Preço: R$ " & servico.Preco.ToString("N2")
+    )
+
     End Sub
 
     Private Sub BotaoCadastraService(sender As Object, e As EventArgs) Handles Button2.Click
