@@ -305,6 +305,24 @@
 
     Private Sub ListBoxHistoricoRecusados(sender As Object, e As EventArgs) Handles HistoricoRecusados.SelectedIndexChanged
 
+        If HistoricoRecusados.SelectedItem Is Nothing Then Exit Sub
+
+        Dim orcamento As Orcamento
+
+        orcamento = CType(HistoricoRecusados.SelectedItem, Orcamento)
+
+        MessageBox.Show(
+        "=== ORÇAMENTO REJEITADO ===" & vbCrLf & vbCrLf &
+        "Cliente: " & orcamento.Cliente.Nome & vbCrLf &
+        "Contato: " & orcamento.Cliente.Contato & vbCrLf & vbCrLf &
+        "Serviço: " & orcamento.Item.Servico.Nome & vbCrLf &
+        "Preço Unitário: R$ " & orcamento.Item.Servico.Preco.ToString("N2") & vbCrLf &
+        "Quantidade: " & orcamento.Item.Quantidade & vbCrLf &
+        "Valor Total: R$ " & orcamento.ValorTotal.ToString("N2") & vbCrLf & vbCrLf &
+        "Status: " & orcamento.Status & vbCrLf &
+        "Motivo da Rejeição: " & orcamento.MotivoRejeicao
+    )
+
     End Sub
 
     Private Sub ComboBoxCliente(sender As Object, e As EventArgs) Handles ComboBox2.SelectedIndexChanged
